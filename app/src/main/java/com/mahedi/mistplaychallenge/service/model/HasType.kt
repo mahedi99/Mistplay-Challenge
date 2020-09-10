@@ -5,7 +5,6 @@ package com.mahedi.mistplaychallenge.service.model
  * 2020-09-09
  */
 
-enum class Holder(val type: Int) {
-    PARENT(0),
-    NESTED(2)
+interface HasType {
+    fun getType(): Int
 }

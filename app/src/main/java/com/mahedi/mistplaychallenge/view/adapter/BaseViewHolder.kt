@@ -3,6 +3,7 @@ package com.mahedi.mistplaychallenge.view.adapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.mahedi.mistplaychallenge.service.model.GamesCategory
+import com.mahedi.mistplaychallenge.service.model.HasType
 
 /**
  * @author Mahedi Hassan
@@ -10,5 +11,5 @@ import com.mahedi.mistplaychallenge.service.model.GamesCategory
  */
 
 abstract class BaseViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    abstract fun bind(data: GamesCategory)
+    abstract fun bind(data: HasType)
 }

@@ -2,10 +2,15 @@ package com.mahedi.mistplaychallenge.view.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mahedi.mistplaychallenge.R
+import com.mahedi.mistplaychallenge.service.model.ChildrenDataObject
+import com.mahedi.mistplaychallenge.service.model.HasType
+import com.mahedi.mistplaychallenge.service.model.ParentDataObject
+import com.mahedi.mistplaychallenge.util.loadImage
 import com.mahedi.mistplaychallenge.view.adapter.GameCategoryAdapter
 import com.mahedi.mistplaychallenge.viewmodel.GamesViewModel
 
@@ -23,7 +28,15 @@ class GamesActivity : AppCompatActivity() {
         gamesViewModel = GamesViewModel(application)
         gamesViewModel.getGames()
         gamesViewModel.data.observe(this, Observer { data ->
-            data?.let {adapter.setGamesCategory(it)}
+
+            data?.let {
+                var myData = mutableListOf<HasType>()
+                for (d in data){
+                    myData.add(ParentDataObject(d.list_title))
+                    myData.add(ChildrenDataObject(d.games))
+                }
+                adapter.setGamesCategory(myData)
+            }
         })
     }
 

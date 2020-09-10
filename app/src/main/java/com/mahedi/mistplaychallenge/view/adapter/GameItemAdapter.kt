@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mahedi.mistplaychallenge.R
 import com.mahedi.mistplaychallenge.service.model.Games
+import com.mahedi.mistplaychallenge.service.model.HasType
 import com.mahedi.mistplaychallenge.util.loadImage
 
 /**
@@ -38,7 +39,7 @@ class GameItemAdapter internal constructor(
         holder.gameImageView.loadImage(current.img)
     }
 
-    internal fun setGamesCategory(games: List<Games>) {
+    internal fun setGameItems(games: List<Games>) {
         this.gamesCategoryList = games
         notifyDataSetChanged()
     }

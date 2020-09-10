@@ -1,35 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/game_image_view"
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="150dp"
         android:layout_height="200dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_launcher_background" />
+        card_view:cardBackgroundColor="#E6E6E6"
+        card_view:cardElevation="8dp"
+        card_view:cardCornerRadius="8dp"
+        android:id="@+id/game_card_view"
+        card_view:cardUseCompatPadding="true"
+        tools:ignore="MissingConstraints">
+    <ImageView
+        android:id="@+id/game_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/game_title"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        tools:text="Android Programming"
+        tools:text="Android"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/game_image_view"
-        app:layout_constraintStart_toStartOf="@+id/game_image_view"
-        app:layout_constraintTop_toBottomOf="@+id/game_image_view" />
+        app:layout_constraintEnd_toEndOf="@+id/game_card_view"
+        app:layout_constraintStart_toStartOf="@+id/game_card_view"
+        app:layout_constraintTop_toBottomOf="@+id/game_card_view"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:textColor="#000000"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

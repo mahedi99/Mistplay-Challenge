@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mahedi.mistplaychallenge.R
-import com.mahedi.mistplaychallenge.service.model.GamesCategory
-import com.mahedi.mistplaychallenge.service.model.Holder
+import com.mahedi.mistplaychallenge.service.model.*
 
 /**
  * @author Mahedi Hassan
@@ -18,30 +18,46 @@ class GameCategoryAdapter internal constructor(
     context: Context) : RecyclerView.Adapter<BaseViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var gameCategory = emptyList<GamesCategory>()
+    private var gameCategory = emptyList<HasType>()
 
 
 
     inner class CategoryViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        val categoryItemTextView: TextView = itemView.findViewById(R.id.category_title)
-        override fun bind(data: GamesCategory) {
-            categoryItemTextView.text = data.list_title
+        private val categoryItemTextView: TextView = itemView.findViewById(R.id.category_title)
+        override fun bind(data: HasType) {
+            val tmpData = data as ParentDataObject
+            categoryItemTextView.text = tmpData.title
         }
     }
 
     inner class GamesViewHolder(itemView: View) : BaseViewHolder(itemView) {
 //        val categoryItemTextView: TextView = itemView.findViewById(R.id.category_title)
-        override fun bind(data: GamesCategory) {
-//            categoryItemTextView.text = data.list_title
+        private lateinit var adapter: GameItemAdapter
+        override fun bind(data: HasType) {
+//            val gameItemAdapter = GameItemAdapter(appl)
+//            with(itemView){
+//                setVariable(BR.adapter, nestedAdapter)
+//            }
+            val tmpData = data as ChildrenDataObject
+            initRecyclerRV()
+            adapter.setGameItems(tmpData.nestedDataObjectList)
+        }
+
+        private fun initRecyclerRV(){
+            val recyclerView = itemView.findViewById<RecyclerView>(R.id.nestedRecyclerView)
+            adapter = GameItemAdapter(itemView.context)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
         }
     }
+
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when(viewType){
             Holder.PARENT.type -> CategoryViewHolder(inflater.inflate(R.layout.game_category_item, parent, false))
-            Holder.NESTED.type -> GamesViewHolder(inflater.inflate(R.layout.game_item, parent, false))
+            Holder.NESTED.type -> GamesViewHolder(inflater.inflate(R.layout.games, parent, false))
             else -> throw IllegalArgumentException("You must supply a valid type for this adapter")
         }
     }
@@ -52,12 +68,16 @@ class GameCategoryAdapter internal constructor(
         holder.bind(gameCategory[position])
     }
 
-    internal fun setGamesCategory(gameCategory: List<GamesCategory>) {
+    internal fun setGamesCategory(gameCategory: List<HasType>) {
         this.gameCategory = gameCategory
         notifyDataSetChanged()
     }
 
     override fun getItemCount() = gameCategory.size
+
+    override fun getItemViewType(position: Int): Int {
+        return position % 2 * 2
+    }
 }
 
 
