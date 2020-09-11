@@ -76,7 +76,7 @@ class GameCategoryAdapter internal constructor(
     override fun getItemCount() = gameCategory.size
 
     override fun getItemViewType(position: Int): Int {
-        return position % 2 * 2
+        return gameCategory.get(position).getType()
     }
 }
 
