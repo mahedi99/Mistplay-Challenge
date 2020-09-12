@@ -13,6 +13,10 @@ import com.mahedi.mistplaychallenge.service.model.*
 /**
  * @author Mahedi Hassan
  * 2020-09-08
+ *
+ * This adapter class is to show the list of game categories which holds two different types of
+ * views. The first view is to show the title of the game category, the second view itself is a
+ * list of games. The second view of this adapter holds a nested recyclerview.
  */
 class GameCategoryAdapter internal constructor(
     context: Context) : RecyclerView.Adapter<BaseViewHolder>() {
@@ -22,6 +26,10 @@ class GameCategoryAdapter internal constructor(
 
 
 
+    /**
+     * The parent view holder represents the title of the game category which is inherited
+     * from [BaseViewHolder]
+     */
     inner class CategoryViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private val categoryItemTextView: TextView = itemView.findViewById(R.id.category_title)
         override fun bind(data: HasType) {
@@ -30,20 +38,19 @@ class GameCategoryAdapter internal constructor(
         }
     }
 
+    /**
+     * The child view holder to render the nested recyclerview using anther adopter
+     * class [GameItemAdapter] which is inherited from [BaseViewHolder]
+     */
     inner class GamesViewHolder(itemView: View) : BaseViewHolder(itemView) {
-//        val categoryItemTextView: TextView = itemView.findViewById(R.id.category_title)
         private lateinit var adapter: GameItemAdapter
         override fun bind(data: HasType) {
-//            val gameItemAdapter = GameItemAdapter(appl)
-//            with(itemView){
-//                setVariable(BR.adapter, nestedAdapter)
-//            }
             val tmpData = data as ChildrenDataObject
-            initRecyclerRV()
+            initRecyclerView()
             adapter.setGameItems(tmpData.nestedDataObjectList)
         }
 
-        private fun initRecyclerRV(){
+        private fun initRecyclerView(){
             val recyclerView = itemView.findViewById<RecyclerView>(R.id.nestedRecyclerView)
             adapter = GameItemAdapter(itemView.context)
             recyclerView.adapter = adapter
@@ -52,19 +59,15 @@ class GameCategoryAdapter internal constructor(
     }
 
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when(viewType){
             Holder.PARENT.type -> CategoryViewHolder(inflater.inflate(R.layout.game_category_item, parent, false))
-            Holder.NESTED.type -> GamesViewHolder(inflater.inflate(R.layout.games, parent, false))
-            else -> throw IllegalArgumentException("You must supply a valid type for this adapter")
+            Holder.CHILD.type -> GamesViewHolder(inflater.inflate(R.layout.games, parent, false))
+            else -> throw IllegalArgumentException("invalid type of adapter")
         }
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-//        val current = gamesCategoryList[position]
-//        holder.categoryItemTextView.text = current.list_title
         holder.bind(gameCategory[position])
     }
 
@@ -79,59 +82,3 @@ class GameCategoryAdapter internal constructor(
         return gameCategory.get(position).getType()
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-class GameCategoryAdapter internal constructor(
-    context: Context) : RecyclerView.Adapter<GameCategoryAdapter.CategoryViewHolder>() {
-
-    private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var gamesCategoryList = emptyList<GameCategory>()
-
-
-
-    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val categoryItemTextView: TextView = itemView.findViewById(R.id.category_title)
-    }
-
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val itemView = inflater.inflate(R.layout.game_category_item, parent, false)
-        return CategoryViewHolder(itemView)
-    }
-
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val current = gamesCategoryList[position]
-        holder.categoryItemTextView.text = current.list_title
-    }
-
-    internal fun setGamesCategory(gameCategory: List<GameCategory>) {
-        this.gamesCategoryList = gameCategory
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount() = gamesCategoryList.size
-}*/

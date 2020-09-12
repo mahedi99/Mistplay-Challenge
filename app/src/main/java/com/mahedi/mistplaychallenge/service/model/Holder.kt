@@ -7,5 +7,5 @@ package com.mahedi.mistplaychallenge.service.model
 
 enum class Holder(val type: Int) {
     PARENT(0),
-    NESTED(2)
+    CHILD(2)
 }

@@ -7,6 +7,6 @@ package com.mahedi.mistplaychallenge.service.model
 
 class ChildrenDataObject (val nestedDataObjectList: List<Games>) : HasType {
     override fun getType(): Int {
-        return Holder.NESTED.type
+        return Holder.CHILD.type
     }
 }

@@ -2,21 +2,29 @@ package com.mahedi.mistplaychallenge.view.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mahedi.mistplaychallenge.R
-import com.mahedi.mistplaychallenge.service.model.ChildrenDataObject
-import com.mahedi.mistplaychallenge.service.model.HasType
-import com.mahedi.mistplaychallenge.service.model.ParentDataObject
-import com.mahedi.mistplaychallenge.util.loadImage
 import com.mahedi.mistplaychallenge.view.adapter.GameCategoryAdapter
 import com.mahedi.mistplaychallenge.viewmodel.GamesViewModel
 
+
+/**
+ * This is the launcher activity class. This activity is loaded immediately
+ * It is responsible for showing a list component with the other helper classes
+ */
+
 class GamesActivity : AppCompatActivity() {
 
+    /**
+     * Declaring the [GameCategoryAdapter] adapter object for recyclerview
+     */
     private lateinit var adapter: GameCategoryAdapter
+
+    /**
+     * Declaring the [GamesViewModel] object
+     */
     private lateinit var gamesViewModel: GamesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,21 +36,13 @@ class GamesActivity : AppCompatActivity() {
         gamesViewModel = GamesViewModel(application)
         gamesViewModel.getGames()
         gamesViewModel.data.observe(this, Observer { data ->
-
-            data?.let {
-                var myData = mutableListOf<HasType>()
-                for (d in data){
-                    myData.add(ParentDataObject(d.list_title))
-                    myData.add(ChildrenDataObject(d.games))
-                }
-                adapter.setGamesCategory(myData)
-            }
+            adapter.setGamesCategory(data)
         })
     }
 
     /**
      * Initializing the RecyclerView and the Adapter for the parent view
-     * which represents the Game Categories
+     * which represents the GameCategory
      */
     private fun initRecyclerView() {
         val recyclerView = findViewById<RecyclerView>(R.id.game_category_recycler_view)

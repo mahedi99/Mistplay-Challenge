@@ -15,6 +15,9 @@ import com.mahedi.mistplaychallenge.util.loadImage
 /**
  * @author Mahedi Hassan
  * 2020-09-08
+ *
+ * Nested adapter class to represent the row items. This adapter class is the part of the nested
+ * recyclerview to show the images and titles for each game.
  */
 
 class GameItemAdapter internal constructor(
@@ -23,6 +26,10 @@ class GameItemAdapter internal constructor(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var gamesCategoryList = emptyList<Games>()
 
+    /**
+     * The View Holder class is to render each item for the inner recyclerview. This class
+     * is inherited from [RecyclerView.ViewHolder]
+     */
     inner class GamesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val gameTitleTextView: TextView = itemView.findViewById(R.id.game_title)
         val gameImageView: ImageView = itemView.findViewById(R.id.game_image_view)
