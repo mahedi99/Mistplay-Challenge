@@ -18,19 +18,10 @@ import com.mahedi.mistplaychallenge.service.model.HasType
 class GamesRepository (private val localDatabase: LocalDatabase){
 
     /**
-     * This companion object is only accessible within the class only, the constant inside the
-     * companion object contains the name of the json file name
-     */
-    companion object {
-        private const val SOURCE_FILE_NAME = "data.json"
-    }
-
-
-    /**
      * This method responses back to the ViewModel class [GamesViewModel] with a list of
      * [GamesCategory] data
      *
-     * @return a list of [GamesCategory] object
+     * @return a list of [HasType] object
      */
     suspend fun getGames(): List<HasType>{
        return localDatabase.getGames()
