@@ -1,9 +1,11 @@
 package com.mahedi.mistplaychallenge.service.repository
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.mahedi.mistplaychallenge.service.model.GamesCategory
+import com.mahedi.mistplaychallenge.service.model.HasType
 
 /**
  * @author Mahedi Hassan
@@ -13,7 +15,7 @@ import com.mahedi.mistplaychallenge.service.model.GamesCategory
  * is provided through this class
  */
 
-class GamesRepository (private val context: Context){
+class GamesRepository (private val localDatabase: LocalDatabase){
 
     /**
      * This companion object is only accessible within the class only, the constant inside the
@@ -30,12 +32,7 @@ class GamesRepository (private val context: Context){
      *
      * @return a list of [GamesCategory] object
      */
-    fun getGames(): List<GamesCategory> {
-        val jsonString = context.assets.open(SOURCE_FILE_NAME).bufferedReader().use{
-            it.readText()
-        }
-
-        return GsonBuilder().create()
-            .fromJson(jsonString, object : TypeToken<List<GamesCategory>>() {}.type)
+    suspend fun getGames(): List<HasType>{
+       return localDatabase.getGames()
     }
 }

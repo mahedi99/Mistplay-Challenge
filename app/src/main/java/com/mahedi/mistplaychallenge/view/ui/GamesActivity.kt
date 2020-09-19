@@ -34,7 +34,6 @@ class GamesActivity : AppCompatActivity() {
         initRecyclerView()
 
         gamesViewModel = GamesViewModel(application)
-        gamesViewModel.getGames()
         gamesViewModel.data.observe(this, Observer { data ->
             adapter.setGamesCategory(data)
         })

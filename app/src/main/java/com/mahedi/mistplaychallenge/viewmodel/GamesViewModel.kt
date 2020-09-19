@@ -1,13 +1,15 @@
 package com.mahedi.mistplaychallenge.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.mahedi.mistplaychallenge.service.model.ChildrenDataObject
 import com.mahedi.mistplaychallenge.service.model.GamesCategory
 import com.mahedi.mistplaychallenge.service.model.HasType
 import com.mahedi.mistplaychallenge.service.model.ParentDataObject
 import com.mahedi.mistplaychallenge.service.repository.GamesRepository
+import com.mahedi.mistplaychallenge.service.repository.LocalDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * @author Mahedi Hassan
@@ -22,31 +24,24 @@ class GamesViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * This is the initialization of [GamesRepository] object to have access to the repository
      */
-    private val repository: GamesRepository = GamesRepository(application)
+    private val repository: GamesRepository
 
     /**
      * This is the initialization of a MutableLiveData object which directly accessible to the UI
      *
      * @return a list of [HasType] MutableLiveData object
      */
-    val data: MutableLiveData<List<HasType>> by lazy {
-        MutableLiveData<List<HasType>>()
-    }
+    val data: LiveData<List<HasType>>
 
 
     /**
-     * This method is makes a request to the repository for a list of data call back.
-     * Directly accessible to the UI
+     * Initializing the local database, repository and livedata object
      */
-    fun getGames() {
-        val result = repository.getGames()
-        result?.let {
-            val myData = mutableListOf<HasType>()
-            for (d in result){
-                myData.add(ParentDataObject(d.list_title))
-                myData.add(ChildrenDataObject(d.games))
-            }
-            data.postValue(myData)
+    init {
+        val localDatabase = LocalDatabase(application)
+        repository = GamesRepository(localDatabase)
+        data = liveData {
+            emit(repository.getGames())
         }
     }
 }
